@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import "dart:math";
 
 void main() {
   runApp(MyApp());
@@ -10,72 +11,62 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'Flutter Demo',
         theme: new ThemeData(primarySwatch: Colors.blue),
-        home: new MyHomePage(title: "Flutterサンプル"));
+        home: new TopPage(title: "Flutterサンプル"));
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class TopPage extends StatefulWidget {
+  TopPage({Key key, this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _MyHomePageState createState() => new _MyHomePageState();
+  _TopPageState createState() => new _TopPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incremetCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  void _decremetCounter() {
-    setState(() {
-      _counter--;
-      if (_counter <= 0) _counter = 0;
-    });
-  }
+class _TopPageState extends State<TopPage> {
+  double _currentPositionX = 200;
+  double _currentPositionY = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text("You have pushed the button this many times:"),
-            Text(
-              "$_counter",
-              style: Theme.of(context).textTheme.display1,
-            )
-          ],
+        appBar: AppBar(
+          title: Text(widget.title),
         ),
-      ),
-      floatingActionButton: Column(
-        verticalDirection: VerticalDirection.down,
-        mainAxisSize:  MainAxisSize.min,
-        children: [
-          FloatingActionButton(
-            onPressed: _incremetCounter,
-            tooltip: "Increment",
-            child: Icon(Icons.add),
-            backgroundColor: Colors.red[500]
-          ),
-          Padding(padding: EdgeInsets.symmetric(vertical: 5.0)),
-          FloatingActionButton(
-            onPressed: _decremetCounter,
-            tooltip: "Decrement",
-            child: Icon(Icons.remove),
-            backgroundColor: Colors.blue[500],
-          ),
-        ],
-      ) 
-    );
+        body: Stack(
+          children: [
+            Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("${_currentPositionX.round()}",
+                      style: TextStyle(fontSize: 60.0)),
+                  Icon(Icons.close),
+                  Text("${_currentPositionY.round()}",
+                      style: TextStyle(fontSize: 60.0)),
+                ],
+              ),
+            ),
+            GestureDetector(
+              onPanUpdate: (DragUpdateDetails details) {
+                _currentPositionX = max(
+                    0,
+                    min(details.localPosition.dx,
+                        MediaQuery.of(context).size.width));
+                _currentPositionY = max(
+                    0,
+                    min(details.localPosition.dy,
+                        MediaQuery.of(context).size.height));
+
+                setState(() {});
+              },
+              child: Container(
+                  width: _currentPositionX,
+                  height: 10,
+                  color: Colors.greenAccent[400]),
+            ),
+          ],
+        ));
   }
 }
