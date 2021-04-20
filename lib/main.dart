@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audio_cache.dart';
 import "dart:math";
-// インポートするライブラリ
 import 'dart:async';
 
 void main() {
@@ -48,35 +47,54 @@ class _TopPageState extends State<TopPage> {
         ),
         body: Stack(
           children: [
+            // Center(
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.center,
+            //     children: [
+            //       Text("${_currentPositionX.round()}",
+            //           style: TextStyle(fontSize: 60.0)),
+            //       Icon(Icons.close),
+            //       Text("${_currentPositionY.round()}",
+            //           style: TextStyle(fontSize: 60.0)),
+            //     ],
+            //   ),
+            // ),
             Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("${_currentPositionX.round()}",
-                      style: TextStyle(fontSize: 60.0)),
-                  Icon(Icons.close),
-                  Text("${_currentPositionY.round()}",
-                      style: TextStyle(fontSize: 60.0)),
-                ],
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                color: Colors.black,
               ),
             ),
-            Container(
-              width: lazerWidth1,
-              height: 5,
-              margin: EdgeInsets.fromLTRB(10, 100, 10, 100),
-              color: Colors.greenAccent[700],
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: lazerWidth1,
+                  height: 5,
+                  margin: EdgeInsets.fromLTRB(75, 205, 75, 0),
+                  color: Colors.greenAccent[700],
+                ),
+                Container(
+                  width: lazerWidth2,
+                  height: 5,
+                  margin: EdgeInsets.fromLTRB(75, 205, 75, 0),
+                  color: Colors.greenAccent[700],
+                ),
+                Container(
+                  width: lazerWidth3,
+                  height: 5,
+                  margin: EdgeInsets.fromLTRB(75, 205, 75, 0),
+                  color: Colors.greenAccent[700],
+                ),
+              ],
             ),
-            Container(
-              width: lazerWidth2,
-              height: 5,
-              margin: EdgeInsets.fromLTRB(10, 310, 10, 100),
-              color: Colors.greenAccent[700],
-            ),
-            Container(
-              width: lazerWidth3,
-              height: 5,
-              margin: EdgeInsets.fromLTRB(10, 520, 10, 100),
-              color: Colors.greenAccent[700],
+            Center(
+              child: Image.asset(
+                'assets/images/lazerharp1.png',
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+              ),
             ),
             GestureDetector(
               onPanUpdate: (DragUpdateDetails details) {
@@ -88,12 +106,12 @@ class _TopPageState extends State<TopPage> {
                     0,
                     min(details.localPosition.dy,
                         MediaQuery.of(context).size.height));
-                lazerWidth1 = judgeCrossLine(100);
-                lazerWidth2 = judgeCrossLine(310);
-                lazerWidth3 = judgeCrossLine(520);
-                plyaSound(100, "sound1");
-                plyaSound(310, "sound2");
-                plyaSound(520, "sound3");
+                lazerWidth1 = judgeCrossLine(205);
+                lazerWidth2 = judgeCrossLine(415);
+                lazerWidth3 = judgeCrossLine(625);
+                plyaSound(205, "sound1");
+                plyaSound(415, "sound2");
+                plyaSound(625, "sound3");
                 setState(() {});
               },
               child: Container(
@@ -108,7 +126,7 @@ class _TopPageState extends State<TopPage> {
   double judgeCrossLine(double startY) {
     return (startY <= _currentPositionY &&
             _currentPositionY <= startY + lazerThickness)
-        ? _currentPositionX - 10
+        ? _currentPositionX - 75
         : MediaQuery.of(context).size.width;
   }
 
