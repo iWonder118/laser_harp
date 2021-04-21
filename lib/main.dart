@@ -41,28 +41,18 @@ class _TopPageState extends State<TopPage> {
 
   @override
   Widget build(BuildContext context) {
+    double bodyWidth = MediaQuery.of(context).size.width;
+    double bodyHeight = MediaQuery.of(context).size.height;
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
         ),
         body: Stack(
           children: [
-            // Center(
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.center,
-            //     children: [
-            //       Text("${_currentPositionX.round()}",
-            //           style: TextStyle(fontSize: 60.0)),
-            //       Icon(Icons.close),
-            //       Text("${_currentPositionY.round()}",
-            //           style: TextStyle(fontSize: 60.0)),
-            //     ],
-            //   ),
-            // ),
             Center(
               child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
+                width: bodyWidth,
+                height: bodyHeight,
                 color: Colors.black,
               ),
             ),
@@ -92,23 +82,19 @@ class _TopPageState extends State<TopPage> {
             Center(
               child: Image.asset(
                 'assets/images/lazerharp1.png',
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
+                width: bodyWidth,
+                height: bodyHeight,
               ),
             ),
             GestureDetector(
               onPanUpdate: (DragUpdateDetails details) {
-                _currentPositionX = max(
-                    0,
-                    min(details.localPosition.dx,
-                        MediaQuery.of(context).size.width));
-                _currentPositionY = max(
-                    0,
-                    min(details.localPosition.dy,
-                        MediaQuery.of(context).size.height));
-                lazerWidth1 = judgeCrossLine(205);
-                lazerWidth2 = judgeCrossLine(415);
-                lazerWidth3 = judgeCrossLine(625);
+                _currentPositionX =
+                    max(0, min(details.localPosition.dx, bodyWidth));
+                _currentPositionY =
+                    max(0, min(details.localPosition.dy, bodyWidth));
+                lazerWidth1 = judgeCrossLine(bodyWidth, 205);
+                lazerWidth2 = judgeCrossLine(bodyWidth, 415);
+                lazerWidth3 = judgeCrossLine(bodyWidth, 625);
                 plyaSound(205, "sound1");
                 plyaSound(415, "sound2");
                 plyaSound(625, "sound3");
@@ -123,11 +109,11 @@ class _TopPageState extends State<TopPage> {
         ));
   }
 
-  double judgeCrossLine(double startY) {
+  double judgeCrossLine(double bodyWidth, double startY) {
     return (startY <= _currentPositionY &&
             _currentPositionY <= startY + lazerThickness)
         ? _currentPositionX - 75
-        : MediaQuery.of(context).size.width;
+        : bodyWidth;
   }
 
   void plyaSound(double startY, String fileName) async {
