@@ -34,15 +34,29 @@ class _TopPageState extends State<TopPage> {
   double lazerWidth1 = 1000;
   double lazerWidth2 = 1000;
   double lazerWidth3 = 1000;
+  double lazer1HeightPersent = 160 / 850;
+  double lazer2HeightPersent = 370 / 850;
+  double lazer3HeightPersent = 580 / 850;
   bool islazer1Played = false;
   bool islazer2Played = false;
   bool islazer3Played = false;
-  AudioCache _player = AudioCache();
+  AudioCache _player = AudioCache(prefix: "music/");
 
   @override
   Widget build(BuildContext context) {
     double bodyWidth = MediaQuery.of(context).size.width;
     double bodyHeight = MediaQuery.of(context).size.height;
+    double lazer1Height = bodyHeight * lazer1HeightPersent;
+    double lazer2Height = bodyHeight * lazer2HeightPersent;
+    double lazer3Height = bodyHeight * lazer3HeightPersent;
+
+    double crossLineAnimation(double startY) {
+      return (startY <= _currentPositionY &&
+              _currentPositionY <= startY + lazerThickness)
+          ? _currentPositionX - 75
+          : bodyHeight;
+    }
+
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
@@ -50,34 +64,41 @@ class _TopPageState extends State<TopPage> {
         body: Stack(
           children: [
             Center(
-              child: Container(
-                width: bodyWidth,
-                height: bodyHeight,
-                color: Colors.black,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("${_currentPositionX.round()}",
+                      style: TextStyle(fontSize: 60.0)),
+                  Icon(Icons.close),
+                  Text("${_currentPositionY.round()}",
+                      style: TextStyle(fontSize: 60.0)),
+                ],
               ),
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: lazerWidth1,
-                  height: 5,
-                  margin: EdgeInsets.fromLTRB(75, 205, 75, 0),
-                  color: Colors.greenAccent[700],
-                ),
-                Container(
-                  width: lazerWidth2,
-                  height: 5,
-                  margin: EdgeInsets.fromLTRB(75, 205, 75, 0),
-                  color: Colors.greenAccent[700],
-                ),
-                Container(
-                  width: lazerWidth3,
-                  height: 5,
-                  margin: EdgeInsets.fromLTRB(75, 205, 75, 0),
-                  color: Colors.greenAccent[700],
-                ),
-              ],
+            // Center(
+            //   child: Container(
+            //     width: bodyWidth,
+            //     height: bodyHeight,
+            //     color: Colors.black,
+            //   ),
+            // ),
+            Container(
+              width: lazerWidth1,
+              height: 5,
+              margin: EdgeInsets.fromLTRB(75, lazer1Height, 75, 0),
+              color: Colors.greenAccent[700],
+            ),
+            Container(
+              width: lazerWidth2,
+              height: 5,
+              margin: EdgeInsets.fromLTRB(75, lazer2Height, 75, 0),
+              color: Colors.greenAccent[700],
+            ),
+            Container(
+              width: lazerWidth3,
+              height: 5,
+              margin: EdgeInsets.fromLTRB(75, lazer3Height, 75, 0),
+              color: Colors.greenAccent[700],
             ),
             Center(
               child: Image.asset(
@@ -92,12 +113,12 @@ class _TopPageState extends State<TopPage> {
                     max(0, min(details.localPosition.dx, bodyWidth));
                 _currentPositionY =
                     max(0, min(details.localPosition.dy, bodyWidth));
-                lazerWidth1 = judgeCrossLine(bodyWidth, 205);
-                lazerWidth2 = judgeCrossLine(bodyWidth, 415);
-                lazerWidth3 = judgeCrossLine(bodyWidth, 625);
-                plyaSound(205, "sound1");
-                plyaSound(415, "sound2");
-                plyaSound(625, "sound3");
+                lazerWidth1 = crossLineAnimation(lazer1Height);
+                lazerWidth2 = crossLineAnimation(lazer2Height);
+                lazerWidth3 = crossLineAnimation(lazer3Height);
+                plyaSound(lazer1Height, "sound1");
+                plyaSound(lazer2Height, "sound2");
+                plyaSound(lazer3Height, "sound3");
                 setState(() {});
               },
               child: Container(
@@ -107,13 +128,6 @@ class _TopPageState extends State<TopPage> {
             ),
           ],
         ));
-  }
-
-  double judgeCrossLine(double bodyWidth, double startY) {
-    return (startY <= _currentPositionY &&
-            _currentPositionY <= startY + lazerThickness)
-        ? _currentPositionX - 75
-        : bodyWidth;
   }
 
   void plyaSound(double startY, String fileName) async {
