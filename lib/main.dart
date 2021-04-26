@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:audioplayers/audio_cache.dart';
 import "dart:math";
 import 'dart:async';
+import 'dart:ui' as ui;
+import 'package:flutter/painting.dart';
 
 void main() {
   runApp(MyApp());
@@ -30,10 +32,7 @@ class _TopPageState extends State<TopPage> {
   GlobalKey globalKey = GlobalKey();
   double _currentPositionX = 0;
   double _currentPositionY = 0;
-  double lazerThickness = 5;
-  double lazerWidth1 = 1000;
-  double lazerWidth2 = 1000;
-  double lazerWidth3 = 1000;
+  double lazerThickness = 2;
   double lazer1HeightPersent = 160 / 850;
   double lazer2HeightPersent = 370 / 850;
   double lazer3HeightPersent = 580 / 850;
@@ -46,14 +45,19 @@ class _TopPageState extends State<TopPage> {
   Widget build(BuildContext context) {
     double bodyWidth = MediaQuery.of(context).size.width;
     double bodyHeight = MediaQuery.of(context).size.height;
+    double lazerWidth1 = bodyWidth;
+    double lazerWidth2 = bodyWidth;
+    double lazerWidth3 = bodyWidth;
     double lazer1Height = bodyHeight * lazer1HeightPersent;
     double lazer2Height = bodyHeight * lazer2HeightPersent;
     double lazer3Height = bodyHeight * lazer3HeightPersent;
+    double lazerWidthMargin = bodyWidth * 0.15;
+    Image lazerHarpImage = Image.asset('assets/images/lazerharp1.png');
 
     double crossLineAnimation(double startY) {
       return (startY <= _currentPositionY &&
               _currentPositionY <= startY + lazerThickness)
-          ? _currentPositionX - 75
+          ? _currentPositionX - lazerWidthMargin
           : bodyHeight;
     }
 
@@ -82,30 +86,37 @@ class _TopPageState extends State<TopPage> {
             //     color: Colors.black,
             //   ),
             // ),
-            Container(
-              width: lazerWidth1,
-              height: 5,
-              margin: EdgeInsets.fromLTRB(75, lazer1Height, 75, 0),
-              color: Colors.greenAccent[700],
-            ),
-            Container(
-              width: lazerWidth2,
-              height: 5,
-              margin: EdgeInsets.fromLTRB(75, lazer2Height, 75, 0),
-              color: Colors.greenAccent[700],
-            ),
-            Container(
-              width: lazerWidth3,
-              height: 5,
-              margin: EdgeInsets.fromLTRB(75, lazer3Height, 75, 0),
-              color: Colors.greenAccent[700],
+            Center(
+              child: Container(
+                child: Stack(
+                  children: [
+                    Container(
+                      width: lazerWidth1,
+                      height: lazerThickness,
+                      margin: EdgeInsets.fromLTRB(
+                          lazerWidthMargin, lazer1Height, lazerWidthMargin, 0),
+                      color: Colors.greenAccent[700],
+                    ),
+                    Container(
+                      width: lazerWidth2,
+                      height: lazerThickness,
+                      margin: EdgeInsets.fromLTRB(
+                          lazerWidthMargin, lazer2Height, lazerWidthMargin, 0),
+                      color: Colors.greenAccent[700],
+                    ),
+                    Container(
+                      width: lazerWidth3,
+                      height: lazerThickness,
+                      margin: EdgeInsets.fromLTRB(
+                          lazerWidthMargin, lazer3Height, lazerWidthMargin, 0),
+                      color: Colors.greenAccent[700],
+                    ),
+                  ],
+                ),
+              ),
             ),
             Center(
-              child: Image.asset(
-                'assets/images/lazerharp1.png',
-                width: bodyWidth,
-                height: bodyHeight,
-              ),
+              child: lazerHarpImage,
             ),
             GestureDetector(
               onPanUpdate: (DragUpdateDetails details) {
