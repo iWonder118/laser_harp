@@ -33,9 +33,9 @@ class _TopPageState extends State<TopPage> {
   double _currentPositionX = 0;
   double _currentPositionY = 0;
   double lazerThickness = 2;
-  double lazer1HeightPersent = 160 / 850;
-  double lazer2HeightPersent = 370 / 850;
-  double lazer3HeightPersent = 580 / 850;
+  double lazer1HeightPersent = 0.2;
+  double lazer2HeightPersent = 0.44;
+  double lazer3HeightPersent = 0.68;
   bool islazer1Played = false;
   bool islazer2Played = false;
   bool islazer3Played = false;
@@ -68,52 +68,32 @@ class _TopPageState extends State<TopPage> {
         body: Stack(
           children: [
             Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("${_currentPositionX.round()}",
-                      style: TextStyle(fontSize: 60.0)),
-                  Icon(Icons.close),
-                  Text("${_currentPositionY.round()}",
-                      style: TextStyle(fontSize: 60.0)),
-                ],
+              child: Container(
+                width: bodyWidth,
+                height: bodyHeight,
+                color: Colors.black,
               ),
             ),
-            // Center(
-            //   child: Container(
-            //     width: bodyWidth,
-            //     height: bodyHeight,
-            //     color: Colors.black,
-            //   ),
-            // ),
-            Center(
-              child: Container(
-                child: Stack(
-                  children: [
-                    Container(
-                      width: lazerWidth1,
-                      height: lazerThickness,
-                      margin: EdgeInsets.fromLTRB(
-                          lazerWidthMargin, lazer1Height, lazerWidthMargin, 0),
-                      color: Colors.greenAccent[700],
-                    ),
-                    Container(
-                      width: lazerWidth2,
-                      height: lazerThickness,
-                      margin: EdgeInsets.fromLTRB(
-                          lazerWidthMargin, lazer2Height, lazerWidthMargin, 0),
-                      color: Colors.greenAccent[700],
-                    ),
-                    Container(
-                      width: lazerWidth3,
-                      height: lazerThickness,
-                      margin: EdgeInsets.fromLTRB(
-                          lazerWidthMargin, lazer3Height, lazerWidthMargin, 0),
-                      color: Colors.greenAccent[700],
-                    ),
-                  ],
-                ),
-              ),
+            Container(
+              width: lazerWidth1,
+              height: lazerThickness,
+              margin: EdgeInsets.fromLTRB(
+                  lazerWidthMargin, lazer1Height, lazerWidthMargin, 0),
+              color: Colors.greenAccent[700],
+            ),
+            Container(
+              width: lazerWidth2,
+              height: lazerThickness,
+              margin: EdgeInsets.fromLTRB(
+                  lazerWidthMargin, lazer2Height, lazerWidthMargin, 0),
+              color: Colors.greenAccent[700],
+            ),
+            Container(
+              width: lazerWidth3,
+              height: lazerThickness,
+              margin: EdgeInsets.fromLTRB(
+                  lazerWidthMargin, lazer3Height, lazerWidthMargin, 0),
+              color: Colors.greenAccent[700],
             ),
             Center(
               child: lazerHarpImage,
