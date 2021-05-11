@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:audioplayers/audio_cache.dart';
 import "dart:math";
 import 'dart:async';
-import 'dart:ui' as ui;
-import 'package:flutter/painting.dart';
 
 void main() {
   runApp(MyApp());
@@ -32,7 +30,10 @@ class _TopPageState extends State<TopPage> {
   GlobalKey globalKey = GlobalKey();
   double _currentPositionX = 0;
   double _currentPositionY = 0;
+  double bodyWidth, bodyHeight, lazerWidthMargin;
   double lazerThickness = 2;
+  double lazerWidth1, lazerWidth2, lazerWidth3;
+  double lazer1Height, lazer2Height, lazer3Height;
   double lazer1HeightPersent = 0.2;
   double lazer2HeightPersent = 0.44;
   double lazer3HeightPersent = 0.68;
@@ -43,23 +44,13 @@ class _TopPageState extends State<TopPage> {
 
   @override
   Widget build(BuildContext context) {
-    double bodyWidth = MediaQuery.of(context).size.width;
-    double bodyHeight = MediaQuery.of(context).size.height;
-    double lazerWidth1 = bodyWidth;
-    double lazerWidth2 = bodyWidth;
-    double lazerWidth3 = bodyWidth;
-    double lazer1Height = bodyHeight * lazer1HeightPersent;
-    double lazer2Height = bodyHeight * lazer2HeightPersent;
-    double lazer3Height = bodyHeight * lazer3HeightPersent;
-    double lazerWidthMargin = bodyWidth * 0.15;
+    bodyWidth = MediaQuery.of(context).size.width;
+    bodyHeight = MediaQuery.of(context).size.height;
+    lazer1Height = bodyHeight * lazer1HeightPersent;
+    lazer2Height = bodyHeight * lazer2HeightPersent;
+    lazer3Height = bodyHeight * lazer3HeightPersent;
+    lazerWidthMargin = bodyWidth * 0.15;
     Image lazerHarpImage = Image.asset('assets/images/lazerharp1.png');
-
-    double crossLineAnimation(double startY) {
-      return (startY <= _currentPositionY &&
-              _currentPositionY <= startY + lazerThickness)
-          ? _currentPositionX - lazerWidthMargin
-          : bodyHeight;
-    }
 
     return Scaffold(
         appBar: AppBar(
@@ -103,7 +94,7 @@ class _TopPageState extends State<TopPage> {
                 _currentPositionX =
                     max(0, min(details.localPosition.dx, bodyWidth));
                 _currentPositionY =
-                    max(0, min(details.localPosition.dy, bodyWidth));
+                    max(0, min(details.localPosition.dy, bodyHeight));
                 lazerWidth1 = crossLineAnimation(lazer1Height);
                 lazerWidth2 = crossLineAnimation(lazer2Height);
                 lazerWidth3 = crossLineAnimation(lazer3Height);
@@ -119,6 +110,13 @@ class _TopPageState extends State<TopPage> {
             ),
           ],
         ));
+  }
+
+  double crossLineAnimation(double startY) {
+    return (startY <= _currentPositionY &&
+            _currentPositionY <= startY + lazerThickness)
+        ? _currentPositionX - lazerWidthMargin
+        : bodyWidth;
   }
 
   void plyaSound(double startY, String fileName) async {
