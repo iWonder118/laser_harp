@@ -37,9 +37,7 @@ class _TopPageState extends State<TopPage> {
   double lazer1HeightPersent = 0.2;
   double lazer2HeightPersent = 0.44;
   double lazer3HeightPersent = 0.68;
-  bool islazer1Played = false;
-  bool islazer2Played = false;
-  bool islazer3Played = false;
+  bool islazerPlayed = false;
   AudioCache _player = AudioCache(prefix: "music/");
 
   @override
@@ -122,11 +120,11 @@ class _TopPageState extends State<TopPage> {
   void plyaSound(double startY, String fileName) async {
     if (startY <= _currentPositionY &&
         _currentPositionY <= startY + lazerThickness) {
-      if (!islazer1Played) {
+      if (!islazerPlayed) {
         _player.play('$fileName.mp3');
-        islazer1Played = true;
+        islazerPlayed = true;
         await Future.delayed(Duration(seconds: 1));
-        islazer1Played = false;
+        islazerPlayed = false;
       }
     }
   }
