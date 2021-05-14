@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audio_cache.dart';
 import "dart:math";
 import 'dart:async';
+
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(MyApp());
@@ -49,7 +53,6 @@ class _TopPageState extends State<TopPage> {
     lazer3Height = bodyHeight * lazer3HeightPersent;
     lazerWidthMargin = bodyWidth * 0.15;
     Image lazerHarpImage = Image.asset('assets/images/lazerharp1.png');
-
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
@@ -108,6 +111,14 @@ class _TopPageState extends State<TopPage> {
             ),
           ],
         ));
+  }
+
+  Future<List<int>> getImageSize() async {
+    var img = await rootBundle.load("assets/images/lazerharp1.png");
+    var decodedImage = await decodeImageFromList(img.buffer.asUint8List());
+    int imgWidth = decodedImage.width;
+    int imgHeight = decodedImage.height;
+    return [imgWidth, imgHeight];
   }
 
   double crossLineAnimation(double startY) {
