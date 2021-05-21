@@ -53,6 +53,8 @@ class _TopPageState extends State<TopPage> {
     lazer3Height = bodyHeight * lazer3HeightPersent;
     lazerWidthMargin = bodyWidth * 0.15;
     Image lazerHarpImage = Image.asset('assets/images/lazerharp1.png');
+    Map<String, int> imageSize = getImageSize("lazerharp1.png") as Map<String, int>;
+
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
@@ -113,12 +115,10 @@ class _TopPageState extends State<TopPage> {
         ));
   }
 
-  Future<List<int>> getImageSize() async {
-    var img = await rootBundle.load("assets/images/lazerharp1.png");
+  Future<Map<String, int>> getImageSize(String imageName) async {
+    var img = await rootBundle.load("assets/images/imageName");
     var decodedImage = await decodeImageFromList(img.buffer.asUint8List());
-    int imgWidth = decodedImage.width;
-    int imgHeight = decodedImage.height;
-    return [imgWidth, imgHeight];
+    return {"width" : decodedImage.width, "height" : decodedImage.height};
   }
 
   double crossLineAnimation(double startY) {
